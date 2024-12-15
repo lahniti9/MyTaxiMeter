@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "926556701098",
+    "project_id": "taxitruck-4a324",
+    "storage_bucket": "taxitruck-4a324.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:926556701098:android:49e4bb4c2ce84f53cf2bd3",
+        "android_client_info": {
+          "package_name": "com.example.mytaximeter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCC2RVLKNzfybOAEmtvNS3Y4MXAx4Tkzr0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#6200EE</color> <!-- Violet par défaut -->
+    <color name="colorPrimaryDark">#3700B3</color> <!-- Variante sombre -->
+    <color name="colorAccent">#03DAC5</color> <!-- Couleur d'accentuation -->
+        <!-- Couleurs principales -->
+        <color name="JauneTaxi">#FFD700</color>
+        <color name="Noir">#000000</color>
+        <color name="GrisClair">#D3D3D3</color>
+        <color name="Blanc">#FFFFFF</color>
+        <color name="Rouge">#FF0000</color>
+        <color name="Bleu">#007BFF</color>
+        <color name="Vert">#28A745</color>
+        <color name="BleuClair">#E0F7FF</color>
+        <color name="GrisSombre">#343A40</color>
+
+        <color name="jaune_taxi">#FFD700</color>
+        <color name="noir">#000000</color>
+        <color name="gris_clair">#D3D3D3</color>
+        <color name="blanc">#FFFFFF</color>
+        <color name="rouge">#FF0000</color>
+        <color name="bleu">#007BFF</color>
+        <color name="vert">#28A745</color>
+        <color name="bleu_clair">#E0F7FF</color>
+        <color name="gris_sombre">#343A40</color>
+
+        <color name="Shadow">#40000000</color>
+
+
+
+</resources>

@@ -1,0 +1,10 @@
+<resources>
+    <!-- Style personnalisé pour les indications (hint text) -->
+    <style name="HintTextAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/gris_clair</item> <!-- Corrected color name to match your colors.xml -->
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <!-- No longer using indicatorHeight and indicatorColor, use item icon tint instead -->
+</resources>

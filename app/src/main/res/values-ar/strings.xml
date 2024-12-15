@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">عداد التاكسي</string>
+    <string name="change_language">تغيير اللغة</string>
+    <string name="edit_profile">تعديل الملف الشخصي</string>
+    <string name="login_title">تسجيل الدخول</string>
+    <string name="signup_title">إنشاء حساب</string>
+    <string name="email_hint">البريد الإلكتروني</string>
+    <string name="password_hint">كلمة المرور</string>
+    <string name="reenter_password_hint">إعادة إدخال كلمة المرور</string>
+    <string name="full_name_hint">الاسم الكامل</string>
+    <string name="license_type_hint">نوع الرخصة</string>
+    <string name="vehicle_number_hint">رقم المركبة</string>
+    <string name="address_hint">العنوان</string>
+    <string name="phone_number_hint">رقم الهاتف</string>
+    <string name="signup_button">إنشاء حساب</string>
+    <string name="login_button">تسجيل الدخول</string>
+    <string name="refer_login_text">هل لديك حساب؟ تسجيل الدخول</string>
+    <string name="refer_signup_text">ليس لديك حساب؟ إنشاء حساب</string>
+
+    <string name="start_button">ابدأ</string>
+    <string name="card_title">تفاصيل الرحلة</string>
+    <string name="info_text">المسافة: 0 متر\nالمدة: 0 دقيقة\nالثمن: 0 درهم</string>
+
+    <string name="enable_dark_mode">تفعيل الوضع الليلي</string>
+    <string name="change_language_btn">تغيير اللغة</string>
+    <string name="log_out">الخروج من التطبيق</string>
+
+
+    <string name="hint_name">الاسم</string>
+    <string name="hint_email">البريد الإلكتروني</string>
+    <string name="hint_license_type">نوع الرخصة</string>
+    <string name="hint_vehicle_number">رقم المركبة</string>
+    <string name="hint_address">العنوان</string>
+    <string name="hint_phone">الهاتف</string>
+    <string name="btn_save">حفظ التعديلات</string>
+
+    <string name="distance_time_info">معلومات المسافة والوقت</string>
+    <string name="total_fare">الأجرة الإجمالية</string>
+    <string name="start_ride">ابدأ الرحلة</string>
+</resources>

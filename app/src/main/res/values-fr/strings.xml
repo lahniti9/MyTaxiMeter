@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="change_language">Changer de langue</string>
+    <string name="edit_profile">Modifier le Profil</string>
+    <string name="app_name">VotreApplication</string>
+    <string name="login_title">Se connecter</string>
+    <string name="signup_title">Créer un compte</string>
+    <string name="email_hint">E-mail</string>
+    <string name="password_hint">Mot de passe</string>
+    <string name="reenter_password_hint">Confirmer le mot de passe</string>
+    <string name="full_name_hint">Nom complet</string>
+    <string name="license_type_hint">Type de licence</string>
+    <string name="vehicle_number_hint">Numéro du véhicule</string>
+    <string name="address_hint">Adresse</string>
+    <string name="phone_number_hint">Numéro de téléphone</string>
+    <string name="signup_button">S\'inscrire</string>
+    <string name="login_button">Se connecter</string>
+    <string name="refer_login_text">Vous avez déjà un compte ? Se connecter</string>
+    <string name="refer_signup_text">Pas encore de compte ? Créer un compte</string>
+
+    <string name="start_button">Démarrer</string>
+    <string name="card_title">Détails du trajet</string>
+    <string name="info_text">Distance : 0 m\nDurée : 0 min\nPrix : 0 MAD</string>
+
+    <string name="enable_dark_mode">Activer le mode sombre</string>
+    <string name="change_language_btn">Changer la langue</string>
+    <string name="log_out">Se déconnecter</string>
+
+    <string name="hint_name">Nom</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_license_type">Type de permis</string>
+    <string name="hint_vehicle_number">Numéro du véhicule</string>
+    <string name="hint_address">Adresse</string>
+    <string name="hint_phone">Téléphone</string>
+    <string name="btn_save">Enregistrer les modifications</string>
+
+
+    <string name="distance_time_info">Info Distance et Temps</string>
+    <string name="total_fare">Tarif Total</string>
+    <string name="start_ride">Démarrer la Course</string>
+</resources>

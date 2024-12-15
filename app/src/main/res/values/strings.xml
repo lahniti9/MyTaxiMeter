@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">MyTaxiMeter</string>
+        <string name="change_language">Change Language</string>
+        <string name="edit_profile">Edit Profile</string>
+        <string name="login_title">Log In</string>
+        <string name="signup_title">Sign Up</string>
+        <string name="email_hint">Email</string>
+        <string name="password_hint">Password</string>
+        <string name="reenter_password_hint">Re-enter Password</string>
+        <string name="full_name_hint">Full Name</string>
+        <string name="license_type_hint">License Type</string>
+        <string name="vehicle_number_hint">Vehicle Number</string>
+        <string name="address_hint">Address</string>
+        <string name="phone_number_hint">Phone Number</string>
+        <string name="signup_button">Sign Up</string>
+        <string name="login_button">Log In</string>
+        <string name="refer_login_text">Already have an account? Log in</string>
+        <string name="refer_signup_text">Don\'t have an account? Sign up</string>
+
+    <string name="start_button">Start</string>
+    <string name="card_title">Trip Details</string>
+    <string name="info_text">Distance: 0 m\nDuration: 0 min\nPrice: 0 MAD</string>
+
+    <string name="enable_dark_mode">Enable Dark Mode</string>
+    <string name="change_language_btn">Change Language</string>
+    <string name="log_out">Log Out</string>
+
+    <string name="hint_name">Name</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_license_type">License Type</string>
+    <string name="hint_vehicle_number">Vehicle Number</string>
+    <string name="hint_address">Address</string>
+    <string name="hint_phone">Phone</string>
+    <string name="btn_save">Save Changes</string>
+
+    <string name="distance_time_info">Distance and Time Info</string>
+    <string name="total_fare">Total Fare</string>
+    <string name="start_ride">Start Ride</string>
+
+
+
+
+</resources>

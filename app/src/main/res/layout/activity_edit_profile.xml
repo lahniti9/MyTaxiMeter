@@ -1,0 +1,62 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_gravity="center_vertical"
+    android:layout_centerInParent="true"
+    android:gravity="center_vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/et_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_name"/>
+
+    <EditText
+        android:id="@+id/et_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_email"/>
+
+    <EditText
+        android:id="@+id/et_license_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_license_type"/>
+
+    <EditText
+        android:id="@+id/et_vehicle_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_vehicle_number"/>
+
+    <EditText
+        android:id="@+id/et_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_address"/>
+
+    <EditText
+        android:id="@+id/et_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_phone"/>
+
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/blanc"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:paddingVertical="12dp"
+        android:elevation="6dp"
+        android:backgroundTint="@color/jaune_taxi"
+        app:cornerRadius="22dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/btn_save"/>
+
+</LinearLayout>
