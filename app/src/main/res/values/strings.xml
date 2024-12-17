@@ -37,6 +37,14 @@
     <string name="total_fare">Total Fare</string>
     <string name="start_ride">Start Ride</string>
 
+    <string name="notification_content">
+    You have traveled %d km in %d minutes. The fare is $%.2f.
+</string>
+
+    <string name="toggle_button_text_start">Start</string>
+    <string name="toggle_button_text_finish">Finish</string>
+    <string name="notification_title">Notification</string>
+
 
 
 

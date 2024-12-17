@@ -38,4 +38,11 @@
     <string name="distance_time_info">Info Distance et Temps</string>
     <string name="total_fare">Tarif Total</string>
     <string name="start_ride">Démarrer la Course</string>
+
+    <string name="notification_title">Notification</string>
+    <string name="notification_content">
+    Vous avez parcouru %d km en %d minutes. Le tarif est de %.2f €.
+</string>
+    <string name="toggle_button_text_start">Démarrer</string>
+    <string name="toggle_button_text_finish">Terminer</string>
 </resources>

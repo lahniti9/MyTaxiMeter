@@ -1,137 +1,236 @@
 package com.example.mytaximeter
 
 import android.Manifest
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.location.Location
-import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.os.Looper
+import android.util.Log
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
+import pub.devrel.easypermissions.EasyPermissions
 
+class HomeFragment : Fragment(R.layout.fragment_home),
+    OnMapReadyCallback,
+    EasyPermissions.PermissionCallbacks {
 
-class HomeFragment : Fragment(), OnMapReadyCallback {
-
-    private lateinit var map: GoogleMap
+    private var listener: MapFragmentListener? = null
+    private lateinit var googleMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private var isTripActive = false
-    private lateinit var startButton: Button
+    private lateinit var locationCallback: LocationCallback
+    var isLocationSet = false
+    private var isTracking = false
+    private var startMarker: Marker? = null
+    private var lastLocation: Location? = null
+    private var totalDistance = 0f
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_home, container, false)
-        startButton = view.findViewById(R.id.startButton)
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 123
+    }
 
-        startButton.setOnClickListener {
-            if (isTripActive) {
-                endTrip()
-            } else {
-                startTrip()
-            }
+    interface MapFragmentListener {
+        fun onDistanceUpdated(distance: Float)
+    }
+
+    private var mapFragmentListener: MapFragmentListener? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is MapFragmentListener) {
+            listener = context
+        } else {
+            throw RuntimeException("$context must implement MapFragmentListener")
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
-        return view
     }
 
-    override fun onMapReady(googleMap: GoogleMap) {
-        map = googleMap
-        enableLocation()
+    override fun onMapReady(map: GoogleMap) {
+        googleMap = map
+
+        try {
+            val success = googleMap.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.zxing_beep)
+            )
+            if (!success) {
+                Log.e("MapFragment", "Failed to apply map style.")
+            }
+        } catch (e: Resources.NotFoundException) {
+            e.printStackTrace()
+        }
+        requestLocationPermission()
     }
 
-    private fun enableLocation() {
+    private fun enableUserLocation() {
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            map.isMyLocationEnabled = true
-            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                if (location != null) {
-                    val currentLatLng = LatLng(location.latitude, location.longitude)
-                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
-                    map.addMarker(MarkerOptions().position(currentLatLng).title("You are here"))
-                }
-            }
+            googleMap.isMyLocationEnabled = true
+        }
+    }
+
+    fun requestLocationPermission() {
+        if (EasyPermissions.hasPermissions(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+            enableUserLocation()
         } else {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                1
+            EasyPermissions.requestPermissions(
+                this,
+                "Location permission is required to use this feature.",
+                LOCATION_PERMISSION_REQUEST_CODE,
+                Manifest.permission.ACCESS_FINE_LOCATION
             )
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
-    ) {
-        if (requestCode == 1 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            enableLocation()
-        } else {
-            Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            requestLocationPermission()
         }
     }
 
-    private fun startTrip() {
+    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            enableUserLocation()
+        }
+    }
+
+    fun startTracking() {
+        isTracking = true
+        totalDistance = 0f
+        startMarker?.remove()
+        startMarker = null
+        lastLocation = null
+
+        // Initialize locationCallback here to ensure it's always defined
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                val location = locationResult.lastLocation
+                if (location != null) {
+                    lastLocation = location
+                    val initialLatLng = LatLng(location.latitude, location.longitude)
+
+                    startMarker = googleMap.addMarker(
+                        MarkerOptions()
+                            .position(initialLatLng)
+                            .title("Start Point")
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+                    )
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(initialLatLng, 16f))
+
+                    isLocationSet = true
+                    startLocationUpdates()
+                }
+            }
+        }
+
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            Toast.makeText(requireContext(), "Location permissions are required to start the trip", Toast.LENGTH_SHORT).show()
-            return
+            ) == PackageManager.PERMISSION_GRANTED) {
+            val locationRequest = LocationRequest.create().apply {
+                priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+                numUpdates = 1
+            }
+
+            fusedLocationClient.requestLocationUpdates(
+                locationRequest,
+                locationCallback,
+                Looper.getMainLooper()
+            )
+        } else {
+            requestLocationPermission()
+        }
+    }
+
+    fun stopTracking() {
+        isTracking = false
+
+        if (::locationCallback.isInitialized) {
+            fusedLocationClient.removeLocationUpdates(locationCallback)
         }
 
-        isTripActive = true
-        startButton.text = "Arrive"
-
-        val serviceIntent = Intent(requireContext(), TrackingService::class.java)
-        ContextCompat.startForegroundService(requireContext(), serviceIntent)
-
-        sendNotification("Trip Started", "Your trip has started.")
+        startMarker?.remove()
+        startMarker = null
+        totalDistance = 0f
+        lastLocation = null
+        isLocationSet = false
+        mapFragmentListener?.onDistanceUpdated(0f)
     }
 
-    private fun endTrip() {
-        isTripActive = false
-        startButton.text = "Start"
 
-        val serviceIntent = Intent(requireContext(), TrackingService::class.java)
-        requireContext().stopService(serviceIntent)
+    private fun startLocationUpdates() {
+        val locationRequest = LocationRequest.create().apply {
+            interval = 1000L
+            fastestInterval = 100L
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            smallestDisplacement = 1f
+        }
 
-        sendNotification("Trip Ended", "Your trip has ended.")
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                super.onLocationResult(locationResult)
+                val currentLocation = locationResult.lastLocation
+
+                if (currentLocation != null && isTracking) {
+                    handleLocationUpdate(currentLocation)
+                }
+            }
+        }
+
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED && isTracking
+        ) {
+            fusedLocationClient.requestLocationUpdates(
+                locationRequest,
+                locationCallback,
+                Looper.getMainLooper()
+            )
+        }
     }
 
-    private fun sendNotification(title: String, message: String) {
-        val notification = NotificationCompat.Builder(requireContext(), "tracking_channel")
-            .setContentTitle(title)
-            .setContentText(message)
-            .setSmallIcon(android.R.drawable.ic_dialog_info)
-            .build()
+    private fun handleLocationUpdate(location: Location) {
+        if (lastLocation != null) {
+            val distanceMoved = lastLocation?.distanceTo(location) ?: 0f
+            if (distanceMoved > 2) {
+                totalDistance += distanceMoved
+                mapFragmentListener?.onDistanceUpdated(totalDistance)
+                val currentLatLng = LatLng(location.latitude, location.longitude)
+                googleMap.animateCamera(CameraUpdateFactory.newLatLng(currentLatLng))
+            }
+        }
+        lastLocation = location
+    }
 
-        (requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).notify(2, notification)
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        isTracking = false
+        fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 }

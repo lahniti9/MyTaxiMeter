@@ -38,4 +38,11 @@
     <string name="distance_time_info">معلومات المسافة والوقت</string>
     <string name="total_fare">الأجرة الإجمالية</string>
     <string name="start_ride">ابدأ الرحلة</string>
+
+    <string name="notification_content">
+    لقد قطعت %d كيلومترًا في %d دقيقة. الأجرة هي %.2f دولار.
+</string>
+    <string name="toggle_button_text_start">ابدأ</string>
+    <string name="toggle_button_text_finish">إنهاء</string>
+    <string name="notification_title">إشعار</string>
 </resources>
